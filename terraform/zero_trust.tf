@@ -13,6 +13,12 @@ resource "cloudflare_zero_trust_access_identity_provider" "cognito_oidc" {
     auth_url      = "https://${var.auth_domain}/oauth2/authorize"
     token_url     = "https://${var.auth_domain}/oauth2/token"
     certs_url     = "https://cognito-idp.eu-west-1.amazonaws.com/${local.auth_user_pool_id}/.well-known/jwks.json"
+
+    scopes = [
+      "openid",
+      "email",
+      "profile",
+    ]
   }
 }
 
