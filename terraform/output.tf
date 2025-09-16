@@ -10,6 +10,11 @@ output "dekort_dev_zone_id" {
   value = cloudflare_zone.dekort_dev.id
 }
 
+output "api_token_minecraft" {
+  value     = cloudflare_api_token.minecraft.value
+  sensitive = true
+}
+
 output "api_token_lmgateway" {
   value     = cloudflare_api_token.lmgateway.value
   sensitive = true

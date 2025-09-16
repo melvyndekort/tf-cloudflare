@@ -30,13 +30,13 @@ resource "cloudflare_api_token" "assets" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -49,13 +49,13 @@ resource "cloudflare_api_token" "cheatsheets" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -68,13 +68,13 @@ resource "cloudflare_api_token" "ignition" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -87,13 +87,13 @@ resource "cloudflare_api_token" "mdekort_nl" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -106,13 +106,13 @@ resource "cloudflare_api_token" "melvyn_dev" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.melvyn_dev_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -125,13 +125,13 @@ resource "cloudflare_api_token" "mta_sts" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -144,13 +144,13 @@ resource "cloudflare_api_token" "startpage" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
   }]
@@ -163,15 +163,28 @@ resource "cloudflare_api_token" "example" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.melvyn_dev_resources
     }, {
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Page Rules Write"]
+      id = local.permission_groups["Pages Write"]
     }]
     resources = local.account_resources
+  }]
+}
+
+resource "cloudflare_api_token" "minecraft" {
+  name   = "minecraft"
+  status = "active"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["Zone Write"]
+    }]
+    resources = local.dekort_dev_resources
   }]
 }
 
@@ -182,7 +195,7 @@ resource "cloudflare_api_token" "lmgateway" {
   policies = [{
     effect = "allow"
     permission_groups = [{
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
   }]
@@ -197,7 +210,7 @@ resource "cloudflare_api_token" "traefik" {
     permission_groups = [{
       id = local.permission_groups["Zone Read"]
       }, {
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = merge(local.mdekort_nl_resources, local.melvyn_dev_resources, local.dekort_dev_resources)
   }]
@@ -224,7 +237,7 @@ resource "cloudflare_api_token" "lmserver" {
     permission_groups = [{
       id = local.permission_groups["Zone Read"]
       }, {
-      id = local.permission_groups["Zone Settings Write"]
+      id = local.permission_groups["Zone Write"]
     }]
     resources = local.mdekort_nl_resources
   }]
