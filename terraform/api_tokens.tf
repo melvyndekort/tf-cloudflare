@@ -216,29 +216,6 @@ resource "cloudflare_api_token" "traefik" {
   }]
 }
 
-resource "cloudflare_api_token" "lmserver" {
-  name   = "lmserver"
-  status = "active"
 
-  policies = [{
-    effect = "allow"
-    permission_groups = [{
-      id = local.permission_groups["Cloudflare Tunnel Read"]
-      }, {
-      id = local.permission_groups["Cloudflare Tunnel Write"]
-      }, {
-      id = local.permission_groups["Access: Apps and Policies Read"]
-      }, {
-      id = local.permission_groups["Access: Apps and Policies Write"]
-    }]
-    resources = local.account_resources
-    }, {
-    effect = "allow"
-    permission_groups = [{
-      id = local.permission_groups["Zone Read"]
-      }, {
-      id = local.permission_groups["DNS Write"]
-    }]
-    resources = local.mdekort_nl_resources
-  }]
-}
+
+
