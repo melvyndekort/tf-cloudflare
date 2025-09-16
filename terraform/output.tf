@@ -3,6 +3,16 @@ output "cloudflare_account_id" {
   sensitive = true
 }
 
+output "cloudflare_email" {
+  value     = local.secrets.cloudflare.email
+  sensitive = true
+}
+
+output "cloudflare_api_key" {
+  value     = local.secrets.cloudflare.api_key
+  sensitive = true
+}
+
 output "mdekort_zone_id" {
   value = cloudflare_zone.mdekort.id
 }
@@ -13,6 +23,10 @@ output "melvyn_dev_zone_id" {
 
 output "dekort_dev_zone_id" {
   value = cloudflare_zone.dekort_dev.id
+}
+
+output "mdekort_users_group_id" {
+  value = cloudflare_zero_trust_access_group.mdekort_users.id
 }
 
 output "api_token_minecraft" {
@@ -69,19 +83,6 @@ output "api_token_startpage" {
   value     = cloudflare_api_token.startpage.value
   sensitive = true
 }
-
-output "api_token_lmserver" {
-  value     = cloudflare_api_token.lmserver.value
-  sensitive = true
-}
-
-# output "permissions_account" {
-#   value = data.cloudflare_api_token_permission_groups_list.all.account
-# }
-
-# output "permissions_zone" {
-#   value = data.cloudflare_api_token_permission_groups_list.all.zone
-# }
 
 output "github_actions_client_id" {
   value = cloudflare_zero_trust_access_service_token.github_actions.client_id
