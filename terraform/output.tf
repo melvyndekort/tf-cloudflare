@@ -1,3 +1,8 @@
+output "cloudflare_account_id" {
+  value     = local.secrets.cloudflare.account_id
+  sensitive = true
+}
+
 output "mdekort_zone_id" {
   value = cloudflare_zone.mdekort.id
 }
