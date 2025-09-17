@@ -201,6 +201,19 @@ resource "cloudflare_api_token" "lmgateway" {
   }]
 }
 
+resource "cloudflare_api_token" "tf_aws" {
+  name   = "tf-aws"
+  status = "active"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["DNS Write"]
+    }]
+    resources = local.mdekort_nl_resources
+  }]
+}
+
 resource "cloudflare_api_token" "traefik" {
   name   = "traefik"
   status = "active"
