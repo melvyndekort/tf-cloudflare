@@ -39,6 +39,11 @@ output "api_token_lmgateway" {
   sensitive = true
 }
 
+output "api_token_tf_aws" {
+  value     = cloudflare_api_token.tf_aws.value
+  sensitive = true
+}
+
 output "api_token_traefik" {
   value     = cloudflare_api_token.traefik.value
   sensitive = true
