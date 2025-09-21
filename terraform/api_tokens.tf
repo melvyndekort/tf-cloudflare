@@ -229,6 +229,25 @@ resource "cloudflare_api_token" "traefik" {
   }]
 }
 
+resource "cloudflare_api_token" "cv_melvyn_dev" {
+  name   = "cv-melvyn-dev"
+  status = "active"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["DNS Write"]
+    }]
+    resources = local.melvyn_dev_resources
+    }, {
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["Pages Write"]
+    }]
+    resources = local.account_resources
+  }]
+}
+
 
 
 
