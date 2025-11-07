@@ -97,3 +97,28 @@ output "github_actions_client_secret" {
   value     = cloudflare_zero_trust_access_service_token.github_actions.client_secret
   sensitive = true
 }
+# Tunnel outputs
+output "tunnel_token" {
+  description = "Cloudflare tunnel token for --token-file"
+  value = {
+    AccountTag   = local.account_id
+    TunnelSecret = random_id.tunnel_secret.b64_std
+    TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.main.id
+  }
+  sensitive = true
+}
+
+output "tunnel_id" {
+  description = "Cloudflare tunnel id"
+  value = cloudflare_zero_trust_tunnel_cloudflared.main.id
+}
+
+output "tunnel_cname" {
+  description = "Cloudflare tunnel CNAME"
+  value       = "${cloudflare_zero_trust_tunnel_cloudflared.main.id}.cfargotunnel.com"
+}
+
+output "virtual_network_id" {
+  description = "Virtual network ID for WARP routing"
+  value       = cloudflare_zero_trust_tunnel_cloudflared_virtual_network.home_network.id
+}

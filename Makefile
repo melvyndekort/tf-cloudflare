@@ -1,4 +1,4 @@
-.PHONY := clean_secrets decrypt encrypt
+.PHONY := clean_secrets decrypt encrypt tunnel-token
 
 ifndef AWS_SESSION_TOKEN
   $(error Not logged in, please run 'assume')
@@ -22,3 +22,6 @@ encrypt:
 		--output text \
 		--query CiphertextBlob > terraform/secrets.yaml.encrypted
 	@rm -f terraform/secrets.yaml
+
+tunnel-token:
+	@terraform -chdir=terraform output -json tunnel_token
