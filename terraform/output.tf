@@ -89,6 +89,11 @@ output "api_token_startpage" {
   sensitive = true
 }
 
+output "api_token_email_infra" {
+  value     = cloudflare_api_token.email_infra.value
+  sensitive = true
+}
+
 output "github_actions_client_id" {
   value = cloudflare_zero_trust_access_service_token.github_actions.client_id
 }

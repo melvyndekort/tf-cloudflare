@@ -7,14 +7,6 @@ resource "cloudflare_zone" "mdekort" {
   type = "full"
 }
 
-resource "cloudflare_dns_record" "mdekort_bimi" {
-  zone_id = cloudflare_zone.mdekort.id
-  name    = "default._bimi"
-  type    = "CNAME"
-  ttl     = 300
-  content = "_bimi.mdekort_nl._d.easydmarc.pro"
-}
-
 resource "cloudflare_dns_record" "mdekort_github_verified_domain" {
   zone_id = cloudflare_zone.mdekort.id
   name    = "_github-pages-challenge-melvyndekort"

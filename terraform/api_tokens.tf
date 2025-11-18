@@ -229,6 +229,19 @@ resource "cloudflare_api_token" "traefik" {
   }]
 }
 
+resource "cloudflare_api_token" "email_infra" {
+  name   = "email-infra"
+  status = "active"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["DNS Write"]
+    }]
+    resources = merge(local.mdekort_nl_resources, local.melvyn_dev_resources, local.dekort_dev_resources)
+  }]
+}
+
 
 
 
