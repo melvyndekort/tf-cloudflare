@@ -64,6 +64,11 @@ output "api_token_cheatsheets" {
   sensitive = true
 }
 
+output "api_token_cognito" {
+  value     = cloudflare_api_token.cognito.value
+  sensitive = true
+}
+
 output "api_token_ignition" {
   value     = cloudflare_api_token.ignition.value
   sensitive = true
