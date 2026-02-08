@@ -32,13 +32,13 @@ resource "cloudflare_api_token" "assets" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -51,13 +51,13 @@ resource "cloudflare_api_token" "cheatsheets" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -70,7 +70,7 @@ resource "cloudflare_api_token" "cognito" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
   }]
 }
 
@@ -83,13 +83,13 @@ resource "cloudflare_api_token" "ignition" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -102,13 +102,13 @@ resource "cloudflare_api_token" "mdekort_nl" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -121,13 +121,13 @@ resource "cloudflare_api_token" "melvyn_dev" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.melvyn_dev_resources
+    resources = jsonencode(local.melvyn_dev_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -140,13 +140,13 @@ resource "cloudflare_api_token" "mta_sts" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -159,13 +159,13 @@ resource "cloudflare_api_token" "startpage" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -178,13 +178,13 @@ resource "cloudflare_api_token" "example" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.melvyn_dev_resources
+    resources = jsonencode(local.melvyn_dev_resources)
     }, {
     effect = "allow"
     permission_groups = [{
       id = local.permission_groups["Pages Write"]
     }]
-    resources = local.account_resources
+    resources = jsonencode(local.account_resources)
   }]
 }
 
@@ -197,7 +197,7 @@ resource "cloudflare_api_token" "minecraft" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.dekort_dev_resources
+    resources = jsonencode(local.dekort_dev_resources)
   }]
 }
 
@@ -210,7 +210,7 @@ resource "cloudflare_api_token" "lmgateway" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
   }]
 }
 
@@ -223,7 +223,7 @@ resource "cloudflare_api_token" "tf_aws" {
     permission_groups = [{
       id = local.permission_groups["DNS Write"]
     }]
-    resources = local.mdekort_nl_resources
+    resources = jsonencode(local.mdekort_nl_resources)
   }]
 }
 
@@ -238,7 +238,22 @@ resource "cloudflare_api_token" "traefik" {
       }, {
       id = local.permission_groups["DNS Write"]
     }]
-    resources = merge(local.mdekort_nl_resources, local.melvyn_dev_resources, local.dekort_dev_resources)
+    resources = jsonencode(merge(local.mdekort_nl_resources, local.melvyn_dev_resources, local.dekort_dev_resources))
+  }]
+}
+
+resource "cloudflare_api_token" "pihole_1" {
+  name   = "pihole-1"
+  status = "active"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["Zone Read"]
+      }, {
+      id = local.permission_groups["DNS Write"]
+    }]
+    resources = jsonencode(local.mdekort_nl_resources)
   }]
 }
 
