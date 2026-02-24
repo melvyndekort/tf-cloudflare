@@ -48,3 +48,12 @@ resource "cloudflare_dns_record" "mdekort_ssh" {
   proxied = false
   content = "home.mdekort.nl"
 }
+
+resource "cloudflare_dns_record" "mdekort_rustdesk" {
+  zone_id = cloudflare_zone.mdekort.id
+  name    = "rustdesk"
+  type    = "CNAME"
+  ttl     = 1
+  proxied = false
+  content = "home.mdekort.nl"
+}
