@@ -28,7 +28,7 @@ resource "cloudflare_dns_record" "mdekort_home_A" {
   name    = "home"
   type    = "A"
   ttl     = 300
-  content = "82.170.177.87"
+  content = local.home_ipv4
 }
 
 resource "cloudflare_dns_record" "mdekort_vpn" {
@@ -49,11 +49,18 @@ resource "cloudflare_dns_record" "mdekort_ssh" {
   content = "home.mdekort.nl"
 }
 
-resource "cloudflare_dns_record" "mdekort_rustdesk" {
+resource "cloudflare_dns_record" "mdekort_rustdesk_A" {
   zone_id = cloudflare_zone.mdekort.id
   name    = "rustdesk"
-  type    = "CNAME"
-  ttl     = 1
-  proxied = false
-  content = "home.mdekort.nl"
+  type    = "A"
+  ttl     = 300
+  content = local.home_ipv4
+}
+
+resource "cloudflare_dns_record" "mdekort_rustdesk_AAAA" {
+  zone_id = cloudflare_zone.mdekort.id
+  name    = "rustdesk"
+  type    = "AAAA"
+  ttl     = 300
+  content = local.compute1_ipv6
 }
