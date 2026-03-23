@@ -242,6 +242,19 @@ resource "cloudflare_api_token" "traefik" {
   }]
 }
 
+resource "cloudflare_api_token" "network_monitor" {
+  name   = "network-monitor"
+  status = "active"
+
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["DNS Write"]
+    }]
+    resources = jsonencode(local.mdekort_nl_resources)
+  }]
+}
+
 resource "cloudflare_api_token" "pihole_1" {
   name   = "pihole-1"
   status = "active"

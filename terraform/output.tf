@@ -94,6 +94,11 @@ output "api_token_startpage" {
   sensitive = true
 }
 
+output "api_token_network_monitor" {
+  value     = cloudflare_api_token.network_monitor.value
+  sensitive = true
+}
+
 output "api_token_pihole_1" {
   value     = cloudflare_api_token.pihole_1.value
   sensitive = true
