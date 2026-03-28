@@ -25,3 +25,6 @@ encrypt:
 
 tunnel-token:
 	@terraform -chdir=terraform output -json tunnel_token
+
+fmt:
+	@terraform -chdir=terraform fmt
