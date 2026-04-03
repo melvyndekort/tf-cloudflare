@@ -38,6 +38,11 @@ resource "cloudflare_zero_trust_access_service_token" "github_actions" {
   name       = "Github Actions"
 }
 
+resource "cloudflare_zero_trust_access_service_token" "grafana_cloud" {
+  account_id = local.account_id
+  name       = "Grafana Cloud"
+}
+
 resource "cloudflare_zero_trust_access_group" "mdekort_users" {
   account_id = local.account_id
   name       = "mdekort users"

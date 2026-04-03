@@ -112,6 +112,15 @@ output "github_actions_client_secret" {
   value     = cloudflare_zero_trust_access_service_token.github_actions.client_secret
   sensitive = true
 }
+
+output "grafana_cloud_client_id" {
+  value = cloudflare_zero_trust_access_service_token.grafana_cloud.client_id
+}
+
+output "grafana_cloud_client_secret" {
+  value     = cloudflare_zero_trust_access_service_token.grafana_cloud.client_secret
+  sensitive = true
+}
 # Tunnel outputs
 output "tunnel_token" {
   description = "Cloudflare tunnel token for --token-file"
