@@ -1,6 +1,6 @@
 # tf-cloudflare
 
-> For global standards, way-of-workings, and pre-commit checklist, see `~/.kiro/steering/behavior.md`
+> For global standards, way-of-workings, and pre-commit checklist, see `~/.claude/CLAUDE.md`
 
 ## Role
 
@@ -8,7 +8,7 @@ Cloud Engineer specializing in Terraform and Cloudflare.
 
 ## Critical: This Repo Is a Central Dependency
 
-This repo provides API tokens and configuration to many other repos via Terraform remote state outputs. Changes to outputs can break downstream repos.
+This repo provides API tokens and configuration to many other repos via Terraform remote state outputs. Changes to outputs can break downstream repos. See also the `terraform-cross-repo` skill (`~/.claude/skills/`) for the full cross-repo state dependency chain.
 
 Consumers:
 - `assets`, `cheatsheets`, `startpage`, `melvyn-dev`, `example.melvyn.dev` — site-specific API tokens
@@ -35,6 +35,10 @@ Consumers:
 - Backend: S3 key `tf-cloudflare.tfstate` in `mdekort-tfstate-075673041815`
 - Providers: AWS `~> 6.0`, Cloudflare `~> 5.0`
 - Secrets: KMS context `target=tf-cloudflare`
+
+## MCP servers
+
+This repo has a project-scoped `cloudflare` MCP server (`.mcp.json`) — see `~/.claude/references/mcp-catalog.md`.
 
 ## Related Repositories
 
