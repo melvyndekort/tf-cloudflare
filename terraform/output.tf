@@ -121,6 +121,15 @@ output "grafana_cloud_client_secret" {
   value     = cloudflare_zero_trust_access_service_token.grafana_cloud.client_secret
   sensitive = true
 }
+
+output "hermes_agent_client_id" {
+  value = cloudflare_zero_trust_access_service_token.hermes_agent.client_id
+}
+
+output "hermes_agent_client_secret" {
+  value     = cloudflare_zero_trust_access_service_token.hermes_agent.client_secret
+  sensitive = true
+}
 # Tunnel outputs
 output "tunnel_token" {
   description = "Cloudflare tunnel token for --token-file"
