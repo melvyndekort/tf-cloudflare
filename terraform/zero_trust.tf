@@ -48,6 +48,17 @@ resource "cloudflare_zero_trust_access_service_token" "hermes_agent" {
   name       = "Hermes Agent"
 }
 
+# "Is this device running WARP and enrolled in this org?" — the check that lets
+# an Access policy admit a device from any network without it having to match a
+# source IP. Lives here rather than in a consumer repo because it is account-
+# scoped and shared: hermes-agent is the first user, homelab can reuse it.
+resource "cloudflare_zero_trust_device_posture_rule" "warp_enrolled" {
+  account_id  = local.account_id
+  name        = "WARP enrolled"
+  description = "Device is running the WARP client and enrolled in this Zero Trust organisation"
+  type        = "warp"
+}
+
 resource "cloudflare_zero_trust_access_group" "mdekort_users" {
   account_id = local.account_id
   name       = "mdekort users"

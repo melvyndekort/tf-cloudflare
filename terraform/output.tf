@@ -104,6 +104,11 @@ output "api_token_pihole_1" {
   sensitive = true
 }
 
+output "api_token_hermes_agent" {
+  value     = cloudflare_api_token.hermes_agent.value
+  sensitive = true
+}
+
 output "github_actions_client_id" {
   value = cloudflare_zero_trust_access_service_token.github_actions.client_id
 }
@@ -154,4 +159,9 @@ output "tunnel_cname" {
 output "virtual_network_id" {
   description = "Virtual network ID for WARP routing"
   value       = cloudflare_zero_trust_tunnel_cloudflared_virtual_network.home_network.id
+}
+
+output "warp_enrolled_posture_rule_id" {
+  description = "Device posture rule id for 'device is WARP-enrolled', for use in consumer repos' Access policies"
+  value       = cloudflare_zero_trust_device_posture_rule.warp_enrolled.id
 }

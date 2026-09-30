@@ -21,6 +21,38 @@ locals {
   account_resources = {
     "com.cloudflare.api.account.${local.account_id}" = "*"
   }
+
+  # permission_groups above collapses same-named groups with ids[0]. Cloudflare
+  # publishes the same name at more than one scope (an account-scoped and a
+  # zone-scoped "Access: Apps and Policies Write", for instance), so that pick
+  # is arbitrary. It is harmless for the zone-scoped DNS/Pages tokens that
+  # predate this, but for an account-scoped policy it can attach a zone-scoped
+  # permission id, which the API accepts and then declines to honour: reads
+  # succeed and writes fail 403 auth.forbidden, with nothing in the token
+  # definition looking wrong. Select on scope explicitly instead.
+  account_permission_groups = {
+    for g in data.cloudflare_api_token_permission_groups_list.all.result :
+    g.name => g.id... if contains(g.scopes, "com.cloudflare.api.account")
+  }
+
+  # Names vary across Cloudflare's own sources - the docs show UI labels
+  # ("Cloudflare Tunnel Edit") while this data source returns API labels, and
+  # the tunnel group may still carry its pre-rename "Argo" name. List every
+  # candidate and keep the ones this account actually exposes, so a name that
+  # does not exist is skipped rather than failing the plan on an index error.
+  hermes_agent_permission_names = [
+    "Cloudflare Tunnel Write",
+    "Argo Tunnel Write",
+    "Access: Apps and Policies Write",
+    "Access: Device Posture Write",
+    "Access: Organizations, Identity Providers, and Groups Write",
+  ]
+
+  hermes_agent_permission_ids = distinct([
+    for n in local.hermes_agent_permission_names :
+    local.account_permission_groups[n][0]
+    if contains(keys(local.account_permission_groups), n)
+  ])
 }
 
 resource "cloudflare_api_token" "assets" {
@@ -270,5 +302,30 @@ resource "cloudflare_api_token" "pihole_1" {
   }]
 }
 
+# hermes-agent manages its own Cloudflare Tunnel and the Access applications
+# in front of it, so it needs account-scoped tunnel/Access permissions on top
+# of the zone-scoped DNS Write it already had. Deliberately NOT switched to the
+# global API key the way homelab is: hermes-agent is the internet-adjacent repo
+# and its agent has an unsandboxed shell, so its pipeline credential stays
+# least-privilege.
+resource "cloudflare_api_token" "hermes_agent" {
+  name   = "hermes-agent"
+  status = "active"
 
-
+  policies = [
+    {
+      effect = "allow"
+      permission_groups = [{
+        id = local.permission_groups["DNS Write"]
+      }]
+      resources = jsonencode(local.mdekort_nl_resources)
+    },
+    {
+      effect = "allow"
+      permission_groups = [
+        for id in local.hermes_agent_permission_ids : { id = id }
+      ]
+      resources = jsonencode(local.account_resources)
+    },
+  ]
+}
