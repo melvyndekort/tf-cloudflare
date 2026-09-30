@@ -270,5 +270,15 @@ resource "cloudflare_api_token" "pihole_1" {
   }]
 }
 
+resource "cloudflare_api_token" "hermes_agent" {
+  name   = "hermes-agent"
+  status = "active"
 
-
+  policies = [{
+    effect = "allow"
+    permission_groups = [{
+      id = local.permission_groups["DNS Write"]
+    }]
+    resources = jsonencode(local.mdekort_nl_resources)
+  }]
+}
