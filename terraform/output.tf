@@ -160,3 +160,13 @@ output "virtual_network_id" {
   description = "Virtual network ID for WARP routing"
   value       = cloudflare_zero_trust_tunnel_cloudflared_virtual_network.home_network.id
 }
+
+output "warp_enrolled_posture_rule_id" {
+  description = "Device posture rule id for 'device is WARP-enrolled', for use in consumer repos' Access policies"
+  value       = cloudflare_zero_trust_device_posture_rule.warp_enrolled.id
+}
+
+output "mdekort_users_access_group_id" {
+  description = "Access group id for mdekort.nl users, for use in consumer repos' Access policies"
+  value       = cloudflare_zero_trust_access_group.mdekort_users.id
+}

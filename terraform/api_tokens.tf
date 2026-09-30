@@ -21,6 +21,17 @@ locals {
   account_resources = {
     "com.cloudflare.api.account.${local.account_id}" = "*"
   }
+
+  # Cloudflare renamed Argo Tunnel to Cloudflare Tunnel, but the token API has
+  # historically kept returning the legacy permission-group name. Their docs
+  # list the UI label ("Cloudflare Tunnel Edit") while this data source returns
+  # API labels ("DNS Write"), so neither source settles it. Take whichever name
+  # this account actually exposes rather than hard-coding a guess that would
+  # fail as an unhelpful "Invalid index" at plan time.
+  tunnel_write_permission_group = try(
+    local.permission_groups["Cloudflare Tunnel Write"],
+    local.permission_groups["Argo Tunnel Write"],
+  )
 }
 
 resource "cloudflare_api_token" "assets" {
@@ -270,15 +281,31 @@ resource "cloudflare_api_token" "pihole_1" {
   }]
 }
 
+# hermes-agent manages its own Cloudflare Tunnel and the Access applications
+# in front of it, so it needs account-scoped tunnel/Access permissions on top
+# of the zone-scoped DNS Write it already had. Deliberately NOT switched to the
+# global API key the way homelab is: hermes-agent is the internet-adjacent repo
+# and its agent has an unsandboxed shell, so its pipeline credential stays
+# least-privilege.
 resource "cloudflare_api_token" "hermes_agent" {
   name   = "hermes-agent"
   status = "active"
 
-  policies = [{
-    effect = "allow"
-    permission_groups = [{
-      id = local.permission_groups["DNS Write"]
-    }]
-    resources = jsonencode(local.mdekort_nl_resources)
-  }]
+  policies = [
+    {
+      effect = "allow"
+      permission_groups = [{
+        id = local.permission_groups["DNS Write"]
+      }]
+      resources = jsonencode(local.mdekort_nl_resources)
+    },
+    {
+      effect = "allow"
+      permission_groups = [
+        { id = local.tunnel_write_permission_group },
+        { id = local.permission_groups["Access: Apps and Policies Write"] },
+      ]
+      resources = jsonencode(local.account_resources)
+    },
+  ]
 }
