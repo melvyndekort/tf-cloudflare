@@ -13,6 +13,10 @@ resource "cloudflare_dns_record" "mdekort_github_verified_domain" {
   type    = "TXT"
   ttl     = 300
   content = "c1fba7e1ffc99730e955d311077ef5"
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
 
 resource "cloudflare_dns_record" "mdekort_vpn6_AAAA" {
@@ -21,6 +25,10 @@ resource "cloudflare_dns_record" "mdekort_vpn6_AAAA" {
   type    = "AAAA"
   ttl     = 300
   content = "2a02:a45b:51f6:150::1"
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
 
 resource "cloudflare_dns_record" "mdekort_home_A" {
@@ -29,6 +37,10 @@ resource "cloudflare_dns_record" "mdekort_home_A" {
   type    = "A"
   ttl     = 300
   content = local.home_ipv4
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
 
 resource "cloudflare_dns_record" "mdekort_vpn" {
@@ -38,6 +50,10 @@ resource "cloudflare_dns_record" "mdekort_vpn" {
   ttl     = 1
   proxied = false
   content = "home.mdekort.nl"
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
 
 resource "cloudflare_dns_record" "mdekort_ssh" {
@@ -47,6 +63,10 @@ resource "cloudflare_dns_record" "mdekort_ssh" {
   ttl     = 1
   proxied = false
   content = "home.mdekort.nl"
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
 
 resource "cloudflare_dns_record" "mdekort_rustdesk_A" {
@@ -55,6 +75,10 @@ resource "cloudflare_dns_record" "mdekort_rustdesk_A" {
   type    = "A"
   ttl     = 300
   content = local.home_ipv4
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
 
 resource "cloudflare_dns_record" "mdekort_rustdesk_AAAA" {
@@ -63,4 +87,8 @@ resource "cloudflare_dns_record" "mdekort_rustdesk_AAAA" {
   type    = "AAAA"
   ttl     = 300
   content = local.compute1_ipv6
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }

@@ -13,4 +13,8 @@ resource "cloudflare_dns_record" "dekort_dev_github_verified_domain" {
   type    = "TXT"
   ttl     = 300
   content = "f837d7931562884dd484f21c6fbb5f"
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
