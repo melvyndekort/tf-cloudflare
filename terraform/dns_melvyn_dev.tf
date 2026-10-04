@@ -13,4 +13,8 @@ resource "cloudflare_dns_record" "melvyn_dev_github_verified_domain" {
   type    = "TXT"
   ttl     = 300
   content = "8fb798c952a406f3402b695447ec43"
+
+  lifecycle {
+    ignore_changes = [comment_modified_on, created_on, modified_on, proxiable, tags_modified_on]
+  }
 }
