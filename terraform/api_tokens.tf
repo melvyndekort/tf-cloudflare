@@ -61,35 +61,48 @@ locals {
     g.name => g.id... if contains(g.scopes, "com.cloudflare.api.account.zone")
   }
 
+  # Read permissions for every Cloudflare component this fleet manages
+  # (resource types under ~/src/melvyndekort: zones, DNS records, Pages,
+  # Email Routing, Access apps/policies/groups/IdPs/service tokens, tunnels with
+  # their config, routes and virtual networks, and device posture rules).
+  # The names were taken from the data source itself and are looked up
+  # directly, not skip-if-missing: a renamed or mistyped group must fail the
+  # plan rather than quietly narrow the token.
+  #
+  # Not included: API token inventory. The tokens in this file are user-owned,
+  # which needs a user-scoped permission and a different resource scope, and the
+  # agent has no day-to-day use for it.
   hermes_agent_readonly_zone_permission_names = [
     "Zone Read",
     "DNS Read",
+    "Email Routing Rules Read",
   ]
 
-  hermes_agent_readonly_zone_permission_ids = distinct([
+  hermes_agent_readonly_zone_permission_ids = [
     for n in local.hermes_agent_readonly_zone_permission_names :
     local.zone_permission_groups[n][0]
-    if contains(keys(local.zone_permission_groups), n)
-  ])
-
-  # Candidate names, skipped when this account does not expose them (see the
-  # note on hermes_agent_permission_names). A skipped name means a silently
-  # narrower token, so check the applied policies rather than trusting this.
-  hermes_agent_readonly_account_permission_names = [
-    "Access: Apps and Policies Read",
-    "Access: Organizations, Identity Providers, and Groups Read",
-    "Access: Device Posture Read",
-    "Cloudflare Tunnel Read",
-    "Argo Tunnel Read",
-    "Pages Read",
-    "Account Settings Read",
   ]
 
-  hermes_agent_readonly_account_permission_ids = distinct([
+  hermes_agent_readonly_account_permission_names = [
+    "Account Settings Read",
+    "Pages Read",
+    "Email Routing Addresses Read",
+    "Access: Apps and Policies Read",
+    "Access: Organizations, Identity Providers, and Groups Read",
+    "Access: Service Tokens Read",
+    "Access: Device Posture Read",
+    # GET /devices/posture (the posture rules themselves) is only covered by
+    # the broad Zero Trust Read, not by the Access: Device Posture one.
+    "Zero Trust Read",
+    "Cloudflare Tunnel Read",
+    "Cloudflare One Connector: cloudflared Read",
+    "Cloudflare One Networks Read",
+  ]
+
+  hermes_agent_readonly_account_permission_ids = [
     for n in local.hermes_agent_readonly_account_permission_names :
     local.account_permission_groups[n][0]
-    if contains(keys(local.account_permission_groups), n)
-  ])
+  ]
 }
 
 resource "cloudflare_api_token" "assets" {
