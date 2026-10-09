@@ -53,6 +53,43 @@ locals {
     local.account_permission_groups[n][0]
     if contains(keys(local.account_permission_groups), n)
   ])
+
+  # Same scope problem as above, for the zone-scoped half of the read-only
+  # token below: pick the zone-scoped group explicitly.
+  zone_permission_groups = {
+    for g in data.cloudflare_api_token_permission_groups_list.all.result :
+    g.name => g.id... if contains(g.scopes, "com.cloudflare.api.account.zone")
+  }
+
+  hermes_agent_readonly_zone_permission_names = [
+    "Zone Read",
+    "DNS Read",
+  ]
+
+  hermes_agent_readonly_zone_permission_ids = distinct([
+    for n in local.hermes_agent_readonly_zone_permission_names :
+    local.zone_permission_groups[n][0]
+    if contains(keys(local.zone_permission_groups), n)
+  ])
+
+  # Candidate names, skipped when this account does not expose them (see the
+  # note on hermes_agent_permission_names). A skipped name means a silently
+  # narrower token, so check the applied policies rather than trusting this.
+  hermes_agent_readonly_account_permission_names = [
+    "Access: Apps and Policies Read",
+    "Access: Organizations, Identity Providers, and Groups Read",
+    "Access: Device Posture Read",
+    "Cloudflare Tunnel Read",
+    "Argo Tunnel Read",
+    "Pages Read",
+    "Account Settings Read",
+  ]
+
+  hermes_agent_readonly_account_permission_ids = distinct([
+    for n in local.hermes_agent_readonly_account_permission_names :
+    local.account_permission_groups[n][0]
+    if contains(keys(local.account_permission_groups), n)
+  ])
 }
 
 resource "cloudflare_api_token" "assets" {
@@ -324,6 +361,35 @@ resource "cloudflare_api_token" "hermes_agent" {
       effect = "allow"
       permission_groups = [
         for id in local.hermes_agent_permission_ids : { id = id }
+      ]
+      resources = jsonencode(local.account_resources)
+    },
+  ]
+}
+# Read-only counterpart to hermes_agent, for the lookups the agent does at
+# runtime (DNS records, Access apps and policies, tunnels, Pages). It exists so
+# the agent does not need the write-capable pipeline credential above, or a
+# hosted MCP server that exposes write endpoints. Changes go through PRs here.
+resource "cloudflare_api_token" "hermes_agent_readonly" {
+  name   = "hermes-agent-readonly"
+  status = "active"
+
+  policies = [
+    {
+      effect = "allow"
+      permission_groups = [
+        for id in local.hermes_agent_readonly_zone_permission_ids : { id = id }
+      ]
+      resources = jsonencode(merge(
+        local.mdekort_nl_resources,
+        local.melvyn_dev_resources,
+        local.dekort_dev_resources,
+      ))
+    },
+    {
+      effect = "allow"
+      permission_groups = [
+        for id in local.hermes_agent_readonly_account_permission_ids : { id = id }
       ]
       resources = jsonencode(local.account_resources)
     },
