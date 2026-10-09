@@ -109,6 +109,11 @@ output "api_token_hermes_agent" {
   sensitive = true
 }
 
+output "api_token_hermes_agent_readonly" {
+  value     = cloudflare_api_token.hermes_agent_readonly.value
+  sensitive = true
+}
+
 output "github_actions_client_id" {
   value = cloudflare_zero_trust_access_service_token.github_actions.client_id
 }
