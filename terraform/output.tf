@@ -170,3 +170,12 @@ output "warp_enrolled_posture_rule_id" {
   description = "Device posture rule id for 'device is WARP-enrolled', for use in consumer repos' Access policies"
   value       = cloudflare_zero_trust_device_posture_rule.warp_enrolled.id
 }
+
+# TEMPORARY - list available Cloudflare permission groups in the PR plan log.
+output "tmp_permission_groups" {
+  value = sort([
+    for g in data.cloudflare_api_token_permission_groups_list.all.result :
+    "${g.name} | ${join(",", [for s in g.scopes : replace(s, "com.cloudflare.api.", "")])}"
+    if can(regex("Read$", g.name))
+  ])
+}
