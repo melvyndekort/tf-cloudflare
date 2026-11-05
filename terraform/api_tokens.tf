@@ -143,19 +143,6 @@ resource "cloudflare_api_token" "cheatsheets" {
   }]
 }
 
-resource "cloudflare_api_token" "cognito" {
-  name   = "cognito"
-  status = "active"
-
-  policies = [{
-    effect = "allow"
-    permission_groups = [{
-      id = local.permission_groups["DNS Write"]
-    }]
-    resources = jsonencode(local.mdekort_nl_resources)
-  }]
-}
-
 resource "cloudflare_api_token" "ignition" {
   name   = "ignition"
   status = "active"
