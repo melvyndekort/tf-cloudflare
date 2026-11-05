@@ -41,9 +41,9 @@ resource "cloudflare_zero_trust_access_identity_provider" "authentik_oidc" {
   config = {
     client_id     = local.authentik_client_id
     client_secret = local.authentik_client_secret
-    auth_url      = "https://authentik.mdekort.nl/application/o/authorize/"
-    token_url     = "https://authentik.mdekort.nl/application/o/token/"
-    certs_url     = "https://authentik.mdekort.nl/application/o/cloudflare-zero-trust/jwks/"
+    auth_url      = "https://auth.mdekort.nl/application/o/authorize/"
+    token_url     = "https://auth.mdekort.nl/application/o/token/"
+    certs_url     = "https://auth.mdekort.nl/application/o/cloudflare-zero-trust/jwks/"
 
     scopes = [
       "openid",
